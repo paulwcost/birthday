@@ -24,7 +24,8 @@
 
         .envelope {
             position: relative;
-            width: 280px;
+            width: 80%;
+            max-width: 280px;
             height: 180px;
             background-color: #f8bbd0;
             border-bottom-left-radius: 6px;
@@ -46,7 +47,7 @@
             right: 20px;
             bottom: 20px;
             background-color: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 5px;
             z-index: 1;
             opacity: 0;
@@ -57,7 +58,7 @@
 
         .letter p {
             margin: 5px 0;
-            font-size: 18px;
+            font-size: 16px; /* Diminui o tamanho da fonte */
             color: #d81b60;
         }
 
@@ -66,7 +67,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 50%;
+            height: 70%;
             background-color: #f48fb1;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top;
@@ -75,8 +76,8 @@
 
         button {
             margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 16px;
+            font-size: 14px; /* Diminui o tamanho da fonte dos botões */
             cursor: pointer;
             background-color: #f06292;
             color: white;
@@ -92,7 +93,7 @@
         .message {
             text-align: center;
             margin-top: 20px;
-            font-size: 20px;
+            font-size: 18px; /* Diminui o tamanho da fonte da mensagem */
             color: #880e4f;
         }
 
@@ -105,14 +106,55 @@
             pointer-events: none;
         }
 
-        
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .envelope {
+                width: 90%;
+                max-width: 240px;
+                height: 160px;
+            }
+
+            .letter p {
+                font-size: 14px; /* Diminui ainda mais em telas menores */
+            }
+
+            .message {
+                font-size: 16px; /* Ajusta o tamanho da fonte da mensagem */
+            }
+
+            button {
+                font-size: 12px; /* Ajusta o tamanho dos botões */
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .envelope {
+                width: 95%;
+                max-width: 200px;
+                height: 140px;
+            }
+
+            .letter p {
+                font-size: 12px; /* Diminui ainda mais em telas menores */
+            }
+
+            .message {
+                font-size: 14px; /* Ajusta a fonte da mensagem */
+            }
+
+            button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="envelope">
         <div class="letter">
             <p id="personalizedMessage">Olá!</p>
-            <p>Feliz aniversario meu amor, te amo muitâo!</p>
+            <p>Feliz aniversario! te desejo tudo de bom, te amo muitâo!</p>
         </div>
         <div class="flap"></div>
     </div>
@@ -121,7 +163,6 @@
     <div class="message" id="message"></div>
     <audio id="openSound" src="spotidownloadercom-no-1-party-anthem-arctic-monkeys_TtF5g2mw.mp3"></audio>
     
-
     <script>
         const envelope = document.querySelector('.envelope');
         const letter = document.querySelector('.letter');
@@ -176,7 +217,7 @@
         }
 
         function personalizeMessage() {
-            
+            const names = ["Meu amor", "Querido(a)", "Amorzinho"];
             return names[Math.floor(Math.random() * names.length)] + ",";
         }
     </script>
