@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envelope Interativo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            font-family: 'Arial', sans-serif;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-color: #fce4ec; }
+            100% { background-color: #f8bbd0; }
+        }
+
+        .envelope {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            background-color: #f8bbd0;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .letter {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .letter p {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #d81b60;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: #f48fb1;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f06292;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ec407a;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #880e4f;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="envelope">
+        <div class="letter">
+            <p id="personalizedMessage">Olá!</p>
+            <p>Você recebeu uma mensagem especial!</p>
+        </div>
+        <div class="flap"></div>
+    </div>
+    <button id="openBtn">Abrir Envelope</button>
+    <button id="closeBtn">Fechar Envelope</button>
+    <div class="message" id="message"></div>
+    <audio id="openSound" src="spotidownloadercom-no-1-party-anthem-arctic-monkeys_TtF5g2mw.mp3"></audio>
+    
+
+    <script>
+        const envelope = document.querySelector('.envelope');
+        const letter = document.querySelector('.letter');
+        const flap = document.querySelector('.flap');
+        const openBtn = document.getElementById('openBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const message = document.getElementById('message');
+        const openSound = document.getElementById('openSound');
+        const closeSound = document.getElementById('closeSound');
+        const personalizedMessage = document.getElementById('personalizedMessage');
+
+        openBtn.addEventListener('click', () => {
+            flap.style.transform = 'rotateX(180deg)';
+            letter.style.opacity = 1;
+            message.textContent = "Surpresa! Você abriu o envelope!";
+            message.style.color = "#d81b60";
+            openSound.play();
+            createConfetti();
+            personalizedMessage.textContent = personalizeMessage();
+        });
+
+        closeBtn.addEventListener('click', () => {
+            flap.style.transform = 'rotateX(0deg)';
+            letter.style.opacity = 0;
+            message.textContent = "Envelope fechado.";
+            message.style.color = "#880e4f";
+            closeSound.play();
+        });
+
+        function createConfetti() {
+            const colors = ['gold', 'silver', 'pink', 'lightblue'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * window.innerWidth}px`;
+                confetti.style.top = `${Math.random() * window.innerHeight}px`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(confetti);
+                animateConfetti(confetti);
+            }
+        }
+
+        function animateConfetti(confetti) {
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: 2000,
+                iterations: 1
+            });
+            animation.onfinish = () => confetti.remove();
+        }
+
+        function personalizeMessage() {
+            const names = ['Querido(a) amigo(a)', 'Pessoa especial', 'Meu amor'];
+            return names[Math.floor(Math.random() * names.length)] + ",";
+        }
+    </script>
+</body>
+</html>
